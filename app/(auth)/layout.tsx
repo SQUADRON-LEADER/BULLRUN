@@ -5,10 +5,15 @@ import {headers} from "next/headers";
 import {redirect} from "next/navigation";
 
 const Layout = async ({ children }: { children : React.ReactNode }) => {
-    const auth = await getAuth();
-    const session = await auth.api.getSession({ headers: await headers() })
-
-    if(session?.user) redirect('/')
+    try {
+        const auth = await getAuth();
+        const session = await auth.api.getSession({ headers: await headers() })
+        
+        if(session?.user) redirect('/')
+    } catch (error) {
+        // Database not available during build - skip auth check
+        console.log('Auth check skipped:', error instanceof Error ? error.message : 'Unknown error')
+    }
 
     return (
         <main className="auth-layout">
