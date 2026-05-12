@@ -15,12 +15,24 @@ import {LogOut} from "lucide-react";
 import NavItems from "@/components/NavItems";
 import {signOut} from "@/lib/actions/auth.actions";
 
-const UserDropdown = ({ user, initialStocks }: {user: User, initialStocks: StockWithWatchlistStatus[]}) => {
+import Link from "next/link";
+
+const UserDropdown = ({ user, initialStocks }: {user?: User, initialStocks: StockWithWatchlistStatus[]}) => {
     const router = useRouter();
 
     const handleSignOut = async () => {
         await signOut();
         router.push("/sign-in");
+    }
+
+    if (!user) {
+        return (
+            <Link href="/sign-in">
+                <Button className="bg-yellow-500 text-yellow-900 hover:bg-yellow-400 font-semibold">
+                    Sign In
+                </Button>
+            </Link>
+        )
     }
 
     return (

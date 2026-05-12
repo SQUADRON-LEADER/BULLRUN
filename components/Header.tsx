@@ -4,7 +4,7 @@ import NavItems from "@/components/NavItems";
 import UserDropdown from "@/components/UserDropdown";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
 
-const Header = async ({ user }: { user: User }) => {
+const Header = async ({ user }: { user?: User }) => {
     const initialStocks = await searchStocks();
 
     return (

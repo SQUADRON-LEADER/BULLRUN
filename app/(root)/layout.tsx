@@ -10,24 +10,21 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
         const auth = await getAuth();
         const session = await auth.api.getSession({ headers: await headers() });
 
-        if(!session?.user) redirect('/sign-in');
-
-        user = {
-            id: session.user.id,
-            name: session.user.name,
-            email: session.user.email,
+        if(session?.user) {
+            user = {
+                id: session.user.id,
+                name: session.user.name,
+                email: session.user.email,
+            }
         }
     } catch (error) {
-        // Database not available during build - redirect to sign-in at runtime
+        // Database not available or auth error - allow demo mode
         console.log('Auth check skipped:', error instanceof Error ? error.message : 'Unknown error')
-        redirect('/sign-in');
     }
-    
-    if (!user) redirect('/sign-in');
 
     return (
         <main className="min-h-screen text-gray-400">
-            <Header user={user!} />
+            <Header user={user} />
 
             <div className="container py-10">
                 {children}
