@@ -35,7 +35,8 @@ export default function SearchCommand({ renderAs = 'button', label = 'Add stock'
     try {
         const results = await searchStocks(searchTerm.trim());
         setStocks(results);
-    } catch {
+    } catch (error) {
+      console.log('Search temporarily unavailable');
       setStocks([])
     } finally {
       setLoading(false)

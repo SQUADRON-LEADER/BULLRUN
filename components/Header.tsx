@@ -3,9 +3,16 @@ import Image from "next/image";
 import NavItems from "@/components/NavItems";
 import UserDropdown from "@/components/UserDropdown";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
+import type { StockWithWatchlistStatus } from "@/types/global";
 
 const Header = async ({ user }: { user?: User }) => {
-    const initialStocks = await searchStocks();
+    let initialStocks: StockWithWatchlistStatus[] = [];
+    try {
+        initialStocks = await searchStocks();
+    } catch (error) {
+        // Gracefully handle API errors during build or when API is unavailable
+        console.log('Stock search unavailable during build');
+    }
 
     return (
         <header className="sticky top-0 header">
